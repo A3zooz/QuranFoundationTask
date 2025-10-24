@@ -1,11 +1,15 @@
 import e from "express";
 import dotenv from "dotenv";
+import cors from "cors";
 dotenv.config();
 import { initializeDatabase } from "./config/db.js";
 
 initializeDatabase();
 
 const app = e();
+app.use(cors());
+app.use(e.json());
+
 
 app.get("/", (req, res) => {
     res.send("Hello from backend");
