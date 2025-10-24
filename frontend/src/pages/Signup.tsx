@@ -66,7 +66,7 @@ export const SignUp = () => {
         }
     };
     return (
-        <div className="flex min-h-screen items-center justify-center bg-linear-to-br from-emerald-50 via-white to-blue-50 p-4">
+        <div className="flex min-h-screen items-center justify-center bg-linear-to-br from-emerald-100 via-white to-blue-100 p-4">
             <div className="w-full max-w-md">
                 {/* Header Section */}
                 <div className="mb-8 flex flex-col items-center text-center">
