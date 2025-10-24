@@ -10,12 +10,14 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { BookOpen, Loader2 } from "lucide-react";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useAuth } from "@/components/context/AuthContext";
 
 export const SignUp = () => {
     const apiUrl = import.meta.env.VITE_API_URL;
+    const { login, register } = useAuth();
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
         email: "",
@@ -50,14 +52,8 @@ export const SignUp = () => {
 
         setIsLoading(true);
         try {
-            const response = await axios.post(`${apiUrl}/signup`, {
-                email: formData.email,
-                password: formData.password,
-            });
-            if (response.status === 201 || response.status === 200) {
-                // Signup successful, redirect to login
-                navigate("/login");
-            }
+            await register(formData.email, formData.password);
+            navigate("/login");
         } catch (error: any) {
             console.error("Signup failed", error);
             setError(error.response?.data?.error || "Something went wrong");
@@ -99,7 +95,10 @@ export const SignUp = () => {
                         )}
                         <form onSubmit={handleSignup} className="space-y-4">
                             <div className="space-y-2">
-                                <Label htmlFor="email" className="text-slate-700">
+                                <Label
+                                    htmlFor="email"
+                                    className="text-slate-700"
+                                >
                                     Email
                                 </Label>
                                 <Input
@@ -114,7 +113,10 @@ export const SignUp = () => {
                                 />
                             </div>
                             <div className="space-y-2">
-                                <Label htmlFor="password" className="text-slate-700">
+                                <Label
+                                    htmlFor="password"
+                                    className="text-slate-700"
+                                >
                                     Password
                                 </Label>
                                 <Input
@@ -129,7 +131,10 @@ export const SignUp = () => {
                                 />
                             </div>
                             <div className="space-y-2">
-                                <Label htmlFor="confirmPassword" className="text-slate-700">
+                                <Label
+                                    htmlFor="confirmPassword"
+                                    className="text-slate-700"
+                                >
                                     Confirm Password
                                 </Label>
                                 <Input

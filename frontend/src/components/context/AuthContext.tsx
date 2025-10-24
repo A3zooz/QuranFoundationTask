@@ -31,8 +31,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         const storedUser = localStorage.getItem("user");
 
         if (storedToken && storedUser) {
+            console.log(storedToken, storedUser)
             setToken(storedToken);
             setUser(JSON.parse(storedUser));
+        }
+        else{
+            
         }
         setIsLoading(false);
     }, []);
@@ -46,7 +50,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setToken(newToken);
         setUser(newUser);
         localStorage.setItem("token", newToken);
-        localStorage.setItem("user", newUser);
+        localStorage.setItem("user", JSON.stringify(newUser));
     };
 
     const register = async (email: string, password: string) => {
@@ -54,12 +58,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             email,
             password,
         });
+        console.log(response)
         const { token: newToken, user: newUser } = response.data;
         setToken(newToken);
         setUser(newUser);
 
         localStorage.setItem("token", newToken);
-        localStorage.setItem("user", newUser);
+        localStorage.setItem("user", JSON.stringify(newUser));
     };
     const logout = () => {
         localStorage.removeItem("token");

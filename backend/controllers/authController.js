@@ -1,5 +1,5 @@
 import { hashPassword, comparePassword, generateToken, verifyToken } from "../utils/authUtils.js";
-import db from "../config/db.js";
+import {db} from "../config/db.js";
 
 export const register = async (req, res) => {
     const { email, password } = req.body;
@@ -9,7 +9,7 @@ export const register = async (req, res) => {
             'INSERT INTO users (email, password) VALUES (?, ?)',
             [email, hashedPassword],
             async function (err) {
-                if (err.message.includes("UNIQUE constraint failed")) {
+                if (err && err.message.includes("UNIQUE constraint failed")) {
                     return res.status(409).json({ message: "Email already registered" });
                 }
                 else if (err) {
@@ -42,7 +42,7 @@ export const login = (req, res) => {
                 return res.status(401).json({ message: "Invalid email or password" });
             }
             const token = generateToken(user.id);
-            return res.status(200).json({ message: "Login successful", token });
+            return res.status(200).json({ message: "Login successful", token, user });
         })
 
 }

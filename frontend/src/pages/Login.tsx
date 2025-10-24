@@ -13,6 +13,7 @@ import {
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/components/context/AuthContext";
 
 export const Login = () => {
     const apiUrl = import.meta.env.VITE_API_URL;
@@ -23,18 +24,14 @@ export const Login = () => {
     });
     const [error, setError] = useState("");
     const [loading, setIsLoading] = useState(false);
+    const { login } = useAuth();
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
         setError("");
         setIsLoading(true);
         try {
-            const response = await axios.post(`${apiUrl}/login`, {
-                email: formData.email,
-                password: formData.password,
-            });
-            if (response.status === 200) {
-                navigate("/home");
-            }
+            await login(formData.email, formData.password);
+            navigate("/home");
         } catch (error: any) {
             console.error("Login failed", error);
             setError(error.response?.data?.error || "Something went wrong");
