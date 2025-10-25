@@ -28,6 +28,7 @@ const Home = () => {
     const navigate = useNavigate();
     const [favorites, setFavorites] = useState<Set<string>>(new Set());
     const [loading, setLoading] = useState(true);
+    const [isMuted, setIsMuted] = useState(false);
     const [listeningSurah, setListeningSurah] = useState<string | null>(null);
     const [loadingSurah, setLoadingSurah] = useState<string | null>(null);
     const [verseIndex, setVerseIndex] = useState<number>(0);
@@ -366,6 +367,8 @@ const Home = () => {
                                                     previous={
                                                         handlePreviousVerse
                                                     }
+                                                    isMuted={isMuted}
+                                                    onMuteChange={setIsMuted}
                                                 />
                                             ) : (
                                                 <p className="text-sm text-red-600">

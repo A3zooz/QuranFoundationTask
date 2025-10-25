@@ -8,6 +8,8 @@ interface AudioPlayerProps {
     next?: () => void;
     previous?: () => void;
     autoPlay?: boolean;
+    isMuted?: boolean;
+    onMuteChange?: (muted: boolean) => void;
 }
 
 export const AudioPlayer = ({
@@ -16,12 +18,12 @@ export const AudioPlayer = ({
     next,
     previous,
     autoPlay = false,
+    isMuted = false,
+    onMuteChange,
 }: AudioPlayerProps) => {
     const [isPlaying, setIsPlaying] = useState(false);
-    const [isMuted, setIsMuted] = useState(false);
     const audioRef = useRef<HTMLAudioElement>(null);
 
-    // Handle autoPlay when component mounts or audioUrl changes
     useEffect(() => {
         if (autoPlay && audioRef.current) {
             audioRef.current
@@ -35,6 +37,12 @@ export const AudioPlayer = ({
                 });
         }
     }, [audioUrl, autoPlay]);
+
+    useEffect(() => {
+        if (audioRef.current) {
+            audioRef.current.muted = isMuted;
+        }
+    }, [isMuted, audioUrl]);
 
     const handleEnded = () => {
         setIsPlaying(false);
@@ -62,10 +70,7 @@ export const AudioPlayer = ({
     };
 
     const toggleMute = () => {
-        if (audioRef.current) {
-            audioRef.current.muted = !isMuted;
-            setIsMuted(!isMuted);
-        }
+        onMuteChange?.(!isMuted);
     };
     return (
         <div className="flex items-center gap-2">
