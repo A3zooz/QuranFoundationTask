@@ -323,7 +323,7 @@ const Home = () => {
                                             className="w-full col-span-2 border-purple-200 hover:bg-purple-50 hover:border-purple-400 group/btn"
                                             onClick={() =>
                                                 navigate(
-                                                    `/surah/${surah.id}/tafsir`
+                                                    `/tafsir/${surah.id}/1`
                                                 )
                                             }
                                         >

@@ -5,6 +5,8 @@ dotenv.config();
 import { initializeDatabase } from "./config/db.js";
 import authRouter from './routes/authRoutes.js'
 import surahRouter from './routes/surahRoutes.js'
+import tafsirRouter from './routes/tafsirRoutes.js'
+import { quranApi } from "./config/quranapi.js";
 
 initializeDatabase();
 
@@ -13,6 +15,7 @@ app.use(cors());
 app.use(e.json());
 app.use('/api/auth', authRouter);
 app.use('/api/surah', surahRouter);
+app.use('/api/tafsir', tafsirRouter);
 
 
 

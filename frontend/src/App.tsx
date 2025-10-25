@@ -6,6 +6,7 @@ import { Login } from "./pages/Login.tsx";
 import { SignUp } from "./pages/Signup.tsx";
 import { ProtectedRoute } from "./components/routes/ProtectedRoute.tsx";
 import { AuthProvider } from "./components/context/AuthContext.tsx";
+import { Tafsir } from "./pages/Tafsir.tsx";
 
 function App() {
     return (
@@ -22,6 +23,11 @@ function App() {
                             </ProtectedRoute>
                         }
                     />
+                    <Route path = "/tafsir/:surahNumber/:verseNumber" element={
+                        <ProtectedRoute>
+                            <Tafsir />
+                        </ProtectedRoute>
+                    } />
                     <Route path="/signup" element={<SignUp />} />
                 </Routes>
             </AuthProvider>
