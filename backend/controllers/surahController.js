@@ -1,7 +1,11 @@
-import { Language } from "@quranjs/api";
+import { isValidChapterId, Language } from "@quranjs/api";
 import { db } from "../config/db.js";
 import { quranApi } from "../config/quranapi.js";
+import axios from 'axios';
+import dotenv from "dotenv";
+dotenv.config();
 
+const versesUrl = `https://verses.quran.com`;
 
 export const getAllSurahs = async (req, res) => {
     const response = await quranApi.chapters.findAll(
@@ -13,11 +17,32 @@ export const getAllSurahs = async (req, res) => {
 
 }
 
+export const getSurahAudio = async (req, res) => {
+    try {
+        const surahNumber = req.params.surahNumber;
+        const response = await quranApi.audio.findVerseRecitationsByChapter(surahNumber, "2");
+        console.log('Mapped audio data count:', response);
+        const audioFiles = response.audioFiles.map(item => ({
+            verseNumber: item.verseKey.split(':')[1],
+            audioUrl: `${versesUrl}/${item.url}`
+        }));
+
+
+        return res.status(200).json(audioFiles);
+    } catch (error) {
+        console.error('Error fetching audio:', error);
+        return res.status(500).json({
+            message: 'Error fetching audio',
+            error: error.message
+        });
+    }
+}
+
 export const bookmarkVerse = (req, res) => {
     const userId = req.user.id;
-    const {surahNumber, verseNumber} = req.body;
+    const { surahNumber, verseNumber } = req.body;
     db.run(
-        `INSERT INTO bookmarks (user_id, surah_number, verse_number) VALUES (?, ?, ?)`,
+        `INSERT INTO bookmarks (user_id, surah, ayah) VALUES (?, ?, ?)`,
         [userId, surahNumber, verseNumber], async function (err) {
             if (err) {
                 return res.status(500).json({ message: "Failed to bookmark verse", error: err.message });
@@ -29,9 +54,9 @@ export const bookmarkVerse = (req, res) => {
 
 export const getBookmarkedVerses = (req, res) => {
     const userId = req.user.id;
-    db.run(`SELECT surah_number, verse_number FROM bookmarks WHERE user_id = ?`, [userId],
+    db.run(`SELECT surah, ayah FROM bookmarks WHERE user_id = ?`, [userId],
         (err, rows) => {
-            if(err) {
+            if (err) {
                 return res.status(500).json({ message: "Failed to retrieve bookmarks", error: err.message });
             }
             return res.status(200).json({ bookmarks: rows });
@@ -42,9 +67,9 @@ export const getBookmarkedVerses = (req, res) => {
 
 export const removeBookmark = (req, res) => {
     const userId = req.user.id;
-    const {surahNumber, verseNumber} = req.body;
+    const { surahNumber, verseNumber } = req.body;
     db.run(
-        `DELETE FROM bookmarks WHERE user_id = ? AND surah_number = ? AND verse_number = ?`,
+        `DELETE FROM bookmarks WHERE user_id = ? AND surah = ? AND ayah = ?`,
         [userId, surahNumber, verseNumber], async function (err) {
             if (err) {
                 return res.status(500).json({ message: "Failed to remove bookmark", error: err.message });
@@ -56,9 +81,10 @@ export const removeBookmark = (req, res) => {
 
 export const favoriteSurah = (req, res) => {
     const userId = req.user.id;
-    const {surahNumber} = req.body;
+
+    const { surahNumber } = req.body;
     db.run(
-        `INSERT INTO favorites (user_id, surah_number) VALUES (?, ?)`,
+        `INSERT INTO favorites (user_id, surah) VALUES (?, ?)`,
         [userId, surahNumber], async function (err) {
             if (err) {
                 return res.status(500).json({ message: "Failed to favorite surah", error: err.message });
@@ -70,11 +96,14 @@ export const favoriteSurah = (req, res) => {
 
 export const getFavoriteSurahs = (req, res) => {
     const userId = req.user.id;
-    db.run(`SELECT surah_number FROM favorites WHERE user_id = ?`, [userId],
+            console.log(req.user.id, "user id");
+
+    db.all(`SELECT * FROM favorites WHERE user_id = ?`, userId,
         (err, rows) => {
-            if(err) {
+            if (err) {
                 return res.status(500).json({ message: "Failed to retrieve favorite surahs", error: err.message });
             }
+            console.log(rows);
             return res.status(200).json({ favorites: rows });
         }
     )
@@ -82,9 +111,9 @@ export const getFavoriteSurahs = (req, res) => {
 
 export const removeFavorite = (req, res) => {
     const userId = req.user.id;
-    const {surahNumber} = req.body;
+    const { surahNumber } = req.body;
     db.run(
-        `DELETE FROM favorites WHERE user_id = ? AND surah_number = ?`,
+        `DELETE FROM favorites WHERE user_id = ? AND surah = ?`,
         [userId, surahNumber], async function (err) {
             if (err) {
                 return res.status(500).json({ message: "Failed to remove favorite", error: err.message });
