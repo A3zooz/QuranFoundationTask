@@ -9,11 +9,11 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { BookOpen, Loader2 } from "lucide-react";
+import { AlertCircle, BookOpen, CheckCircle2, Loader2 } from "lucide-react";
 import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
 import { useAuth } from "@/components/context/AuthContext";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 export const SignUp = () => {
     const apiUrl = import.meta.env.VITE_API_URL;
@@ -26,6 +26,10 @@ export const SignUp = () => {
     });
     const [error, setError] = useState("");
     const [loading, setIsLoading] = useState(false);
+    const passwordsMatch =
+        formData.password &&
+        formData.confirmPassword &&
+        formData.password === formData.confirmPassword;
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({
@@ -88,12 +92,13 @@ export const SignUp = () => {
                         </CardDescription>
                     </CardHeader>
                     <CardContent>
-                        {error && (
-                            <div className="mb-4 rounded-lg bg-red-50 border border-red-200 p-3 text-sm text-red-800">
-                                {error}
-                            </div>
-                        )}
                         <form onSubmit={handleSignup} className="space-y-4">
+                            {error && (
+                                <Alert variant="destructive">
+                                    <AlertCircle className="h-4 w-4" />
+                                    <AlertDescription>{error}</AlertDescription>
+                                </Alert>
+                            )}
                             <div className="space-y-2">
                                 <Label
                                     htmlFor="email"
@@ -147,6 +152,9 @@ export const SignUp = () => {
                                     required
                                     className="h-11 border-slate-300 focus:border-emerald-500 focus:ring-emerald-500"
                                 />
+                                {passwordsMatch && (
+                                    <CheckCircle2 className="absolute right-3 top-3 h-5 w-5 text-emerald-600" />
+                                )}
                             </div>
                             <Button
                                 type="submit"

@@ -41,8 +41,11 @@ export const login = (req, res) => {
             if (!isMatch) {
                 return res.status(401).json({ message: "Invalid email or password" });
             }
-            const token = generateToken(user.id);
-            return res.status(200).json({ message: "Login successful", token, user });
+            const token = generateToken(user);
+            return res.status(200).json({ message: "Login successful", token, user: {
+                email: user.email,
+                id: user.id
+            } });
         })
 
 }

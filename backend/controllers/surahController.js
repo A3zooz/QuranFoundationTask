@@ -1,4 +1,18 @@
+import { Language } from "@quranjs/api";
 import { db } from "../config/db.js";
+import { quranApi } from "../config/quranapi.js";
+
+
+export const getAllSurahs = async (req, res) => {
+    const response = await quranApi.chapters.findAll(
+        {
+            language: Language.ARABIC
+        }
+    );
+    return res.status(200).json(response);
+
+}
+
 export const bookmarkVerse = (req, res) => {
     const userId = req.user.id;
     const {surahNumber, verseNumber} = req.body;

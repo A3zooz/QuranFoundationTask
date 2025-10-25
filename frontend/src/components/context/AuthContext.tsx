@@ -71,6 +71,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         localStorage.removeItem("user");
         setToken(null);
         setUser(null);
+        
     };
 
     const isAuthenticated = !!token;

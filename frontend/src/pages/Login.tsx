@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useState } from "react";
-import { BookOpen, Loader2 } from "lucide-react";
+import { AlertCircle, BookOpen, Loader2 } from "lucide-react";
 import {
     Card,
     CardContent,
@@ -14,6 +14,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/components/context/AuthContext";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 export const Login = () => {
     const apiUrl = import.meta.env.VITE_API_URL;
@@ -73,9 +74,10 @@ export const Login = () => {
                     </CardHeader>
                     <CardContent>
                         {error && (
-                            <div className="mb-4 rounded-lg bg-red-50 border border-red-200 p-3 text-sm text-red-800">
-                                {error}
-                            </div>
+                            <Alert variant="destructive" className="mb-2">
+                                <AlertCircle className="h-4 w-4" />
+                                <AlertDescription>{error}</AlertDescription>
+                            </Alert>
                         )}
                         <form onSubmit={handleLogin} className="space-y-4">
                             <div className="space-y-2">
