@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import type { ReactNode } from "react";
-import axios from "axios";
+import axios from "../../lib/axios.ts";
 
 interface User {
     id: number;
@@ -17,7 +17,6 @@ interface AuthContextType {
     logout: () => void;
 }
 
-const apiUrl = import.meta.env.VITE_API_URL;
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
@@ -42,7 +41,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }, []);
 
     const login = async (email: string, password: string) => {
-        const response = await axios.post(`${apiUrl}/auth/login`, {
+        const response = await axios.post(`/auth/login`, {
             email: email,
             password: password,
         });
@@ -54,7 +53,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     };
 
     const register = async (email: string, password: string) => {
-        const response = await axios.post(`${apiUrl}/auth/register`, {
+        const response = await axios.post(`/auth/register`, {
             email,
             password,
         });
