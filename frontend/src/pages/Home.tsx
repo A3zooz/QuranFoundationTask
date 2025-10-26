@@ -24,7 +24,6 @@ interface Surah {
 
 
 const Home = () => {
-    const apiUrl = `${import.meta.env.VITE_API_URL}/surah`;
     const [surahs, setSurahs] = useState<Surah[]>([]);
     const { logout } = useAuth();
     const navigate = useNavigate();
@@ -41,7 +40,7 @@ const Home = () => {
     const [showFavoritesOnly, setShowFavoritesOnly] = useState(false);
     const getSurahs = async () => {
         try {
-            const response = await axios.get(`${apiUrl}/surahs`);
+            const response = await axios.get(`surah/surahs`);
             setSurahs(response.data);
         } catch (error) {
             console.error(error);
@@ -53,7 +52,7 @@ const Home = () => {
     const toggleFavorite = async (surahNumber: string) => {
         if (favorites.has(surahNumber)) {
             try {
-                await axios.delete(`${apiUrl}/favorite`, {
+                await axios.delete(`surah/favorite`, {
                     data: {
                         surahNumber: surahNumber,
                     },
@@ -64,7 +63,7 @@ const Home = () => {
             }
         } else {
             try {
-                await axios.post(`${apiUrl}/favorite`, {
+                await axios.post(`surah/favorite`, {
                     surahNumber: surahNumber,
                 });
                 await getFavorites();
@@ -76,7 +75,7 @@ const Home = () => {
 
     const getFavorites = async () => {
         try {
-            const response = await axios.get(`${apiUrl}/favorites`);
+            const response = await axios.get(`surah/favorites`);
             const favoriteSurahs = response.data.favorites.map(
                 (fav: any) => fav.surah
             );
@@ -98,7 +97,7 @@ const Home = () => {
             setLoadingSurah(surahId);
             console.log("Loading audio for surah:", surahId);
             const response = await axios.get(
-                `${apiUrl}/surahs/${surahId}/audio`
+                `/surah/surahs/${surahId}/audio`
             );
             console.log("Audio response:", response.data);
 

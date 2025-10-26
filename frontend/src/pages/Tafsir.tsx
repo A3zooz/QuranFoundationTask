@@ -38,14 +38,13 @@ export const Tafsir = () => {
     const [selectedTafsirId, setSelectedTafsirId] = useState<number | null>(null);
     const [verse, setVerse] = useState<any>(null);
     const [error, setError] = useState("");
-    const apiUrl = import.meta.env.VITE_API_URL;
 
     useEffect(() => {
         const fetchTafsir = async () => {
             try {
                 setLoading(true);
                 const response = await axios.get(
-                    `${apiUrl}/tafsir/tafsirs/${surahNumber}/${verseNumber}`
+                    `/tafsir/tafsirs/${surahNumber}/${verseNumber}`
                 );
                 setTafsirData(response.data.tafsirs);
                 setVerse(response.data.verse);
@@ -64,7 +63,7 @@ export const Tafsir = () => {
         const fetchTafsirs = async () => {
             try {
                 const response = await axios.get(
-                    `${apiUrl}/tafsir/tafsirs`
+                    `/tafsir/tafsirs`
                 );
                 setAvailableTafsirs(response.data);
             } catch (err) {
@@ -75,7 +74,7 @@ export const Tafsir = () => {
             fetchTafsir();
             fetchTafsirs();
         }
-    }, [surahNumber, verseNumber, apiUrl]);
+    }, [surahNumber, verseNumber]);
 
     
 
