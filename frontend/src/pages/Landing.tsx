@@ -1,9 +1,17 @@
+import { useAuth } from "@/components/context/AuthContext";
 import { Button } from "@/components/ui/button";
 import { BookOpen } from "lucide-react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 export const Landing = () => {
     const navigate = useNavigate();
+    const {isLoading, isAuthenticated} =  useAuth();
+    useEffect(() => {
+        if(!isLoading && isAuthenticated) {
+            navigate('/home');
+        }
+    }, [isLoading, isAuthenticated, navigate]);
     return (
         <div className="min-h-screen bg-linear-to-br from-emerald-100 via-white to-blue-100">
             {/* Hero Section */}
