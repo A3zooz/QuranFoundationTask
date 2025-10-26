@@ -1,5 +1,4 @@
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
 import { useState } from "react";
 import { AlertCircle, BookOpen, Loader2 } from "lucide-react";
 import {
@@ -17,7 +16,6 @@ import { useAuth } from "@/components/context/AuthContext";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
 export const Login = () => {
-    const apiUrl = import.meta.env.VITE_API_URL;
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
         email: "",

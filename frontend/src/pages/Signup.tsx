@@ -10,14 +10,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { AlertCircle, BookOpen, CheckCircle2, Loader2 } from "lucide-react";
-import { useContext, useState } from "react";
+import {  useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/components/context/AuthContext";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
 export const SignUp = () => {
-    const apiUrl = import.meta.env.VITE_API_URL;
-    const { login, register } = useAuth();
+    const {  register } = useAuth();
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
         email: "",
