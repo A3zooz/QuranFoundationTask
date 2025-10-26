@@ -12,6 +12,7 @@ import { BookOpen, Heart, Info, Loader2, LogOut, Play } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AudioPlayer } from "@/components/AudioPlayer";
+import PAGES_MAP from "@/shared/pages-map";
 
 interface Surah {
     nameArabic: string;
@@ -20,6 +21,7 @@ interface Surah {
     revelationPlace: string;
     versesCount: number;
 }
+
 
 const Home = () => {
     const apiUrl = `${import.meta.env.VITE_API_URL}/surah`;
@@ -287,7 +289,7 @@ const Home = () => {
                                             variant="outline"
                                             className="w-full border-emerald-200 hover:bg-emerald-50 hover:border-emerald-400 group/btn"
                                             onClick={() =>
-                                                navigate(`/surah/${surah.id}`)
+                                                navigate(`/surah/${PAGES_MAP[surah.id as keyof typeof PAGES_MAP]}`)
                                             }
                                         >
                                             <BookOpen
