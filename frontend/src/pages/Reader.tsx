@@ -1,0 +1,136 @@
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { ArrowLeft, ArrowRight, BookOpen, Home } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
+
+const TOTAL_PAGES = 604;
+export const Reader = () => {
+    const { pageNumber } = useParams<{ pageNumber: string }>();
+    const navigate = useNavigate();
+    const [pageNum, setPageNum] = useState(parseInt(pageNumber || "1"));
+    if (isNaN(pageNum) || pageNum < 1 || pageNum > TOTAL_PAGES) {
+        return <Navigate to="/reader/1" replace />;
+    }
+    const [loading, isLoading] = useState(true);
+    useEffect(() => {
+        setPageNum(parseInt(pageNumber || "1"));
+    }, [pageNumber]);
+
+    const handlePreviousPage = () => {
+        if (pageNum > 1) {
+            navigate(`/surah/${pageNum - 1}`);
+        }
+    };
+    const handleNextPage = () => {
+        if (pageNum < TOTAL_PAGES) {
+            navigate(`/surah/${pageNum + 1}`);
+        }
+    };
+    const stringifyPageNumber = (num: number) => {
+        return num.toString().padStart(3, "0");
+    }
+    return (
+        <div className="min-h-screen bg-linear-to-br from-emerald-100 via-white to-blue-100">
+            <div className="bg-linear-to-r from-emerald-600 to-emerald-700 text-white py-6 px-4 shadow-lg">
+                <div className="container  w-full flex mx-auto items-center justify-between">
+                    <Button
+                        variant="ghost"
+                        className="text-emerald-900 bg-white hover:bg-emerald-50"
+                        onClick={() => navigate("/home")}
+                    >
+                        <Home className="mr-2" size={20} />
+                        Back to Home
+                    </Button>
+                    <div className="flex items-center ml-auto gap-4">
+                        <BookOpen size={32} />
+                        <div>
+                            <h1 className="text-2xl font-bold">
+                                القرآن الكريم
+                            </h1>
+                            <p className="text-emerald-100 text-sm">
+                                Page {pageNum} of {TOTAL_PAGES}
+                            </p>
+                        </div>
+                    </div>
+                    <div className="w-32" /> {/* Spacer for centering */}
+                </div>
+                {/* Page View */}
+            </div>
+            <div className="container mx-auto max-w-5xl px-4 py-6">
+                <Card className="shadow-2xl border-emerald-100 overflow-hidden">
+                    <div className="relative bg-linear-to-br from-amber-100 to-yellow-100 min-h-[600px] flex items-center justify-center">
+                        {loading && (
+                            <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-75 z-10">
+                                <div className="animate-pulse text-emerald-600">
+                                    <BookOpen size={48} />
+                                    <p className="mt-4 text-lg">
+                                        Loading Page {pageNum}...
+                                    </p>
+                                </div>
+                            </div>
+                        )}
+                        <img
+                            src={`/quran/page${stringifyPageNumber(pageNum)}.png`}
+                            alt={`Quran Page ${stringifyPageNumber(pageNum)}`}
+                            onLoad={() => isLoading(false)}
+                            onError={() => isLoading(false)}
+                            className={
+                                loading
+                                    ? "opacity-0"
+                                    : "opacity-100 transition-opacity duration-500"
+                            }
+                        />
+                    </div>
+                    {/* Navigation Buttons */}
+                    <div className="bg-emerald-100 border-t border-emerald-200 p-4">
+                        <div className="flex justify-between items-center gap-4">
+                            {/* Next Button */}
+                            <Button
+                                variant="outline"
+                                size="lg"
+                                onClick={handleNextPage}
+                                disabled={pageNum === TOTAL_PAGES}
+                                className="flex-1 border-emerald-300 hover:bg-emerald-100 disabled:opacity-50"
+                            >
+                                <ArrowLeft className="mr-2" size={20} />
+                                Next Page
+                            </Button>
+
+                            {/* Page Input */}
+                            <div className="flex items-center gap-2">
+                                <input
+                                    type="number"
+                                    min="1"
+                                    max={TOTAL_PAGES}
+                                    value={pageNum}
+                                    onChange={(e) => {
+                                        const page = parseInt(e.target.value);
+                                        if (page >= 1 && page <= TOTAL_PAGES) {
+                                            navigate(`/surah/${page}`);
+                                        }
+                                    }}
+                                    className="w-20 text-center border-2 border-emerald-300 rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                                />
+                                <span className="text-slate-600 text-sm">
+                                    / {TOTAL_PAGES}
+                                </span>
+                            </div>
+
+                            <Button
+                                variant="outline"
+                                size="lg"
+                                onClick={handlePreviousPage}
+                                disabled={pageNum === 1}
+                                className="flex-1 border-emerald-300 hover:bg-emerald-100 disabled:opacity-50"
+                            >
+                                <ArrowRight className="ml-2" size={20} />
+                                Previous Page
+                            </Button>
+                        </div>
+                    </div>
+                </Card>
+            </div>
+        </div>
+    );
+};
