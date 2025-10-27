@@ -22,6 +22,15 @@ app.use('/api/tafsir', tafsirRouter);
 app.get("/api", (req, res) => {
     res.send("Hello from backend");
 });
+const response = await quranApi.verses.findByPage('1', {
+    fields: {
+        textUthmani: true,
+        imageUrl: true,
+        imageWidth: true
+    }
+});
+console.log('Sample Quran API response for page 1:', response);
+
 
 app.listen(process.env.PORT || 5000, () => {
     console.log(`Backend server is running on port ${process.env.PORT || 5000}`);

@@ -17,6 +17,23 @@ export const getAllSurahs = async (req, res) => {
 
 }
 
+export const getPageVerses = async (req, res) => {
+    try {
+        const pageNumber = req.params.pageNumber;
+        const response = await quranApi.verses.findByPage(pageNumber, {
+            fields: {
+                textUthmani: true,
+                imageUrl: true,
+                imageWidth: true
+            }
+        });
+        return res.status(200).json(response);
+    } catch (error) {
+        console.error('Error fetching page verses:', error);
+        return res.status(500).json({ message: 'Error fetching page verses', error: error.message });
+    }
+}
+
 export const getSurahAudio = async (req, res) => {
     try {
         const surahNumber = req.params.surahNumber;

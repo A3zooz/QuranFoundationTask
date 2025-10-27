@@ -1,11 +1,12 @@
 import e from "express";
-import { bookmarkVerse, favoriteSurah, getAllSurahs, getBookmarkedVerses, getFavoriteSurahs, getSurahAudio, removeFavorite } from "../controllers/surahController.js";
+import { bookmarkVerse, getPageVerses, favoriteSurah, getAllSurahs, getBookmarkedVerses, getFavoriteSurahs, getSurahAudio, removeFavorite } from "../controllers/surahController.js";
 import { authenticate } from "../middleware/authMiddleware.js";
 
 const router = e.Router();
 
 router.get('/surahs', authenticate, getAllSurahs);
 router.get('/surahs/:surahNumber/audio', authenticate, getSurahAudio);
+router.get('/page/:pageNumber', authenticate, getPageVerses);
 router.post('/bookmark', authenticate, bookmarkVerse);
 router.get('/bookmarks', authenticate, getBookmarkedVerses);
 router.post('/favorite', authenticate, favoriteSurah);
