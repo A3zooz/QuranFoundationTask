@@ -10,14 +10,18 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { AlertCircle, BookOpen, CheckCircle2, Loader2 } from "lucide-react";
-import {  useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/components/context/AuthContext";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { useTranslation } from "react-i18next";
+import "@/i18n";
 
 export const SignUp = () => {
-    const {  register } = useAuth();
+    const { register } = useAuth();
     const navigate = useNavigate();
+    const { t, i18n } = useTranslation();
+
     const [formData, setFormData] = useState({
         email: "",
         password: "",
@@ -25,6 +29,7 @@ export const SignUp = () => {
     });
     const [error, setError] = useState("");
     const [loading, setIsLoading] = useState(false);
+
     const passwordsMatch =
         formData.password &&
         formData.confirmPassword &&
@@ -41,15 +46,13 @@ export const SignUp = () => {
         e.preventDefault();
         setError("");
 
-        // Validate password match
         if (formData.password !== formData.confirmPassword) {
-            setError("Passwords do not match");
+            setError("signup.passwords_not_match");
             return;
         }
 
-        // Validate password strength
         if (formData.password.length < 6) {
-            setError("Password must be at least 6 characters long");
+            setError("signup.password_too_short");
             return;
         }
 
@@ -59,24 +62,38 @@ export const SignUp = () => {
             navigate("/login");
         } catch (error: any) {
             console.error("Signup failed", error);
-            setError(error.response?.data?.error || "Something went wrong");
+            setError("signup.something_wrong");
         } finally {
             setIsLoading(false);
         }
     };
+
+    useEffect(() => {
+        document.documentElement.lang = i18n.language;
+        document.documentElement.dir = i18n.language === "ar" ? "rtl" : "ltr";
+        localStorage.setItem("lang", i18n.language);
+    }, [i18n.language]);
+
+    const toggleLang = () => {
+        i18n.changeLanguage(i18n.language === "en" ? "ar" : "en");
+    };
+
     return (
-        <div className="flex min-h-screen items-center justify-center bg-linear-to-br from-emerald-100 via-white to-blue-100 p-4">
+        <div
+            dir={i18n.language === "ar" ? "rtl" : "ltr"}
+            className="flex min-h-screen items-center justify-center bg-linear-to-br from-emerald-100 via-white to-blue-100 p-4"
+        >
             <div className="w-full max-w-md">
-                {/* Header Section */}
+                {/* Header */}
                 <div className="mb-8 flex flex-col items-center text-center">
                     <div className="mb-4 inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-linear-to-br from-emerald-500 to-emerald-700 shadow-lg shadow-emerald-500/30">
                         <BookOpen className="h-8 w-8 text-white" />
                     </div>
                     <h1 className="mb-2 text-3xl font-bold text-slate-900">
-                        Join Us Today
+                        {t("signup.header_title")}
                     </h1>
                     <p className="text-sm text-slate-600">
-                        Create an account to start your Quranic journey
+                        {t("signup.header_subtitle")}
                     </p>
                 </div>
 
@@ -84,77 +101,85 @@ export const SignUp = () => {
                 <Card className="border-slate-200 shadow-xl">
                     <CardHeader className="space-y-1">
                         <CardTitle className="text-2xl font-bold text-slate-900">
-                            Sign Up
+                            {t("signup.card_title")}
                         </CardTitle>
                         <CardDescription className="text-slate-600">
-                            Enter your details to create your account
+                            {t("signup.card_description")}
                         </CardDescription>
                     </CardHeader>
+
                     <CardContent>
                         <form onSubmit={handleSignup} className="space-y-4">
                             {error && (
                                 <Alert variant="destructive">
                                     <AlertCircle className="h-4 w-4" />
-                                    <AlertDescription>{error}</AlertDescription>
+                                    <AlertDescription>
+                                        {t(error)}
+                                    </AlertDescription>
                                 </Alert>
                             )}
+
                             <div className="space-y-2">
                                 <Label
                                     htmlFor="email"
                                     className="text-slate-700"
                                 >
-                                    Email
+                                    {t("signup.email_label")}
                                 </Label>
                                 <Input
                                     id="email"
                                     name="email"
                                     type="email"
-                                    placeholder="name@example.com"
+                                    placeholder={t("signup.email_placeholder")}
                                     value={formData.email}
                                     onChange={handleChange}
                                     required
-                                    className="h-11 border-slate-300 focus:border-emerald-500 focus:ring-emerald-500"
                                 />
                             </div>
+
                             <div className="space-y-2">
                                 <Label
                                     htmlFor="password"
                                     className="text-slate-700"
                                 >
-                                    Password
+                                    {t("signup.password_label")}
                                 </Label>
                                 <Input
                                     id="password"
                                     name="password"
                                     type="password"
-                                    placeholder="Create a strong password"
+                                    placeholder={t(
+                                        "signup.password_placeholder"
+                                    )}
                                     value={formData.password}
                                     onChange={handleChange}
                                     required
-                                    className="h-11 border-slate-300 focus:border-emerald-500 focus:ring-emerald-500"
                                 />
                             </div>
-                            <div className="space-y-2">
+
+                            <div className="space-y-2 relative">
                                 <Label
                                     htmlFor="confirmPassword"
                                     className="text-slate-700"
                                 >
-                                    Confirm Password
+                                    {t("signup.confirm_password_label")}
                                 </Label>
                                 <Input
                                     id="confirmPassword"
                                     name="confirmPassword"
                                     type="password"
-                                    placeholder="Confirm your password"
+                                    placeholder={t(
+                                        "signup.confirm_password_placeholder"
+                                    )}
                                     value={formData.confirmPassword}
                                     onChange={handleChange}
                                     required
-                                    className="h-11 border-slate-300 focus:border-emerald-500 focus:ring-emerald-500"
                                 />
                                 {passwordsMatch && (
-                                    <CheckCircle2 className="absolute right-3 top-3 h-5 w-5 text-emerald-600" />
+                                    <CheckCircle2 className="absolute right-3 top-9 h-5 w-5 text-emerald-600" />
                                 )}
                             </div>
+
                             <Button
                                 type="submit"
                                 disabled={loading}
@@ -163,30 +188,42 @@ export const SignUp = () => {
                                 {loading ? (
                                     <>
                                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                        Creating Account...
+                                        {t("signup.creating_account")}
                                     </>
                                 ) : (
-                                    "Create Account"
+                                    t("signup.create_account_button")
                                 )}
                             </Button>
                         </form>
                     </CardContent>
-                    <CardFooter className="flex flex-col space-y-4 border-t border-slate-100 pt-6">
+
+                    <CardFooter className="flex flex-col space-y-4 border-t pt-6">
                         <div className="text-center text-sm text-slate-600">
-                            Already have an account?{" "}
+                            {t("signup.already_have_account")}{" "}
                             <Link
                                 to="/login"
-                                className="font-semibold text-emerald-600 hover:text-emerald-700 transition-colors"
+                                className="font-semibold text-emerald-600 hover:text-emerald-700"
                             >
-                                Log in
+                                {t("signup.login_link")}
                             </Link>
                         </div>
                         <Button
                             variant="outline"
-                            className="w-full border-slate-300 text-slate-700 hover:bg-slate-50 hover:text-slate-900"
+                            className="w-full border-slate-300 text-slate-700 hover:bg-slate-50"
                             onClick={() => navigate("/")}
                         >
-                            Back to Home
+                            {t("signup.back_to_home")}
+                        </Button>
+                        <Button
+                            variant="ghost"
+                            className="text-emerald-700 hover:text-emerald-900"
+                            onClick={() =>
+                                i18n.changeLanguage(
+                                    i18n.language === "ar" ? "en" : "ar"
+                                )
+                            }
+                        >
+                            {i18n.language === "ar" ? "English" : "العربية"}
                         </Button>
                     </CardFooter>
                 </Card>
