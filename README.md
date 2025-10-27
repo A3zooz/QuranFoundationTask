@@ -3,7 +3,7 @@
 [![Live Demo](https://img.shields.io/badge/Live%20Demo-Visit%20App-emerald?style=for-the-badge)](https://qafs-quran-app.netlify.app/)
 [![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
 
-A full-stack web application for reading, listening to, and studying the Holy Quran with Tafsir (exegesis) support. Built with React, TypeScript, and Node.js.
+A full-stack web application for reading, listening to, and studying the Holy Quran with Tafsir support. Built with React, TypeScript, and Node.js.
 
 🌐 **Production Link:** [https://qafs-quran-app.netlify.app/](https://qafs-quran-app.netlify.app/)
 
