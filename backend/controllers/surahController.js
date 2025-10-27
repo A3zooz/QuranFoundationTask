@@ -43,6 +43,7 @@ export const getSurahByNumber = async (req, res) => {
         const response = await quranApi.chapters.findById(surahNumber, {
             language: Language.ARABIC
         });
+        console.log('Fetched surah data:', response);
         return res.status(200).json(response);
     } catch (error) {
         console.error('Error fetching surah by number:', error);

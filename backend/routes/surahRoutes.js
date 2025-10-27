@@ -1,5 +1,5 @@
 import e from "express";
-import { bookmarkVerse, getPageVerses, favoriteSurah, getAllSurahs, getBookmarkedVerses, getFavoriteSurahs, getSurahAudio, removeFavorite } from "../controllers/surahController.js";
+import { bookmarkVerse, getSurahByNumber, getPageVerses, favoriteSurah, getAllSurahs, getBookmarkedVerses, getFavoriteSurahs, getSurahAudio, removeFavorite } from "../controllers/surahController.js";
 import { authenticate } from "../middleware/authMiddleware.js";
 
 const router = e.Router();

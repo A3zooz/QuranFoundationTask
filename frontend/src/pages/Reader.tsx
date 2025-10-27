@@ -11,6 +11,7 @@ export const Reader = () => {
     const navigate = useNavigate();
     const [pageNum, setPageNum] = useState(parseInt(pageNumber || "1"));
     const [verses, setVerses] = useState<any[]>([]);
+    const [surahName, setSurahName] = useState<string>("");
     if (isNaN(pageNum) || pageNum < 1 || pageNum > TOTAL_PAGES) {
         return <Navigate to="/reader/1" replace />;
     }
@@ -35,25 +36,21 @@ export const Reader = () => {
             isLoading(true);
             try {
                 const response = await axios.get(`surah/page/${pageNum}`);
-                setVerses(response.data);
+                setVerses(response.data)
+                console.log(response.data);
+                if (response.data && response.data.length > 0) {
+                    const surahNumber = response.data[0].verseKey.split(":")[0];
+                    const surahResponse = await axios.get(`surah/${surahNumber}`);
+                    setSurahName(surahResponse.data.nameArabic);
+                };
             } catch (error) {
                 console.error("Error fetching page verses:", error);
             } finally {
                 isLoading(false);
             }
         };
-        const fetchSurahName = async (surahNumber: number) => {
-            try {
-                const response = await axios.get(`surah/${surahNumber}`);
-                return response.data.name;
-            } catch (error) {
-                console.error("Error fetching surah name:", error);
-                return "";
-            }
-        };
         fetchPageVerses();
         console.log("Fetched verses for page", pageNum);
-        console.log(verses);
     }, [pageNum]);
 
     const toArabicNumerals = (num: number) => {
@@ -123,11 +120,11 @@ export const Reader = () => {
                                             <div className="w-full text-center my-8">
                                                 <div className="inline-block bg-linear-to-r from-emerald-600 to-emerald-700 text-white px-8 py-4 rounded-lg shadow-lg">
                                                     <h2 className="text-3xl font-bold mb-2">
-                                                        سُورَةُ {verse.surah}
+                                                        سُورَةُ {surahName}
                                                     </h2>
                                                 </div>
                                                 {/* Bismillah - except for Surah At-Tawbah (9) */}
-                                                {verse.surahNumber !== 9 && (
+                                                {verse.verseKey.split(":")[0] !== '9' && (
                                                     <div className="text-4xl mt-6 mb-4 text-emerald-800">
                                                         بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ
                                                     </div>
