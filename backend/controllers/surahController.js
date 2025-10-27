@@ -130,7 +130,7 @@ export const favoriteSurah = (req, res) => {
 
 export const getFavoriteSurahs = (req, res) => {
     const userId = req.user.id;
-            console.log(req.user.id, "user id");
+    console.log(req.user.id, "user id");
 
     db.all(`SELECT * FROM favorites WHERE user_id = ?`, userId,
         (err, rows) => {
