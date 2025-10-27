@@ -45,7 +45,7 @@ export const Reader = () => {
         fetchPageVerses();
         console.log("Fetched verses for page", pageNum);
         console.log(verses);
-    }, []);
+    }, [pageNum]);
 
     const toArabicNumerals = (num: number) => {
         const arabicNumerals = [
@@ -107,7 +107,7 @@ export const Reader = () => {
                                 </div>
                             </div>
                         ) : (
-                            <div className="quran-text-container text-right leading-loose">
+                            <div className="quran-text-container leading-loose font-['Uthmanic','Traditional_Arabic',serif]" dir= "rtl">
                                 {verses.map((verse: any, index: number) => (
                                     <span key={index} className="inline">
                                         <span className="text-3xl font-arabic leading-loose">
@@ -115,24 +115,12 @@ export const Reader = () => {
                                         </span>
                                         <span className="inline-flex items-center justify-center mx-2 text-emerald-600">
                                             <span className="relative inline-flex items-center justify-center w-8 h-8">
-                                                <svg
-                                                    className="w-8 h-8 absolute"
-                                                    viewBox="0 0 24 24"
-                                                >
-                                                    <circle
-                                                        cx="12"
-                                                        cy="12"
-                                                        r="10"
-                                                        fill="none"
-                                                        stroke="currentColor"
-                                                        strokeWidth="1.5"
-                                                    />
-                                                </svg>
-                                                <span className="absolute text-sm font-bold">
-                                                    {toArabicNumerals(verse.verseNumber)}
-                                                </span>
+                                                
+                                                <span className="text-4xl">
+                                                {toArabicNumerals(verse.verseNumber)}
                                             </span>
-                                        </span>{" "}
+                                            </span>
+                                        </span>
                                     </span>
                                 ))}
                             </div>
