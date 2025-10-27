@@ -1,0 +1,47 @@
+{
+    "signup": {
+        "header_title": "Join Us Today",
+        "header_subtitle": "Create an account to start your Quranic journey",
+        "card_title": "Sign Up",
+        "card_description": "Enter your details to create your account",
+        "email_label": "Email",
+        "email_placeholder": "name@example.com",
+        "password_label": "Password",
+        "password_placeholder": "Create a strong password",
+        "confirm_password_label": "Confirm Password",
+        "confirm_password_placeholder": "Confirm your password",
+        "create_account_button": "Create Account",
+        "creating_account": "Creating Account...",
+        "already_have_account": "Already have an account?",
+        "login_link": "Log in",
+        "back_to_home": "Back to Home",
+        "passwords_not_match": "Passwords do not match",
+        "password_too_short": "Password must be at least 6 characters long",
+        "something_wrong": "Something went wrong"
+    },
+    "landing": {
+        "title": "Welcome to our Quran app",
+        "subtitle": "Your journey to understanding the Quran starts here.",
+        "signup": "Sign Up",
+        "login": "Log In"
+    },
+
+    "login": {
+        "welcome": "Welcome Back",
+        "subtitle": "Sign in to continue your Quranic journey",
+        "title": "Log In",
+        "description": "Enter your credentials to access your account",
+        "email": "Email",
+        "emailPlaceholder": "name@example.com",
+        "password": "Password",
+        "passwordPlaceholder": "Enter your password",
+        "button": "Sign In",
+        "loading": "Signing In...",
+        "noAccount": "Don't have an account?",
+        "signup": "Sign up",
+        "back": "Back to Home",
+        "error": "Something went wrong. Please try again."
+    },
+
+    "lang_switch": "عربي"
+}

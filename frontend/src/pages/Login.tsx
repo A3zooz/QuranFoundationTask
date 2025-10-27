@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { AlertCircle, BookOpen, Loader2 } from "lucide-react";
 import {
     Card,
@@ -14,6 +14,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/components/context/AuthContext";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { useTranslation } from "react-i18next";
 
 export const Login = () => {
     const navigate = useNavigate();
@@ -24,6 +25,8 @@ export const Login = () => {
     const [error, setError] = useState("");
     const [loading, setIsLoading] = useState(false);
     const { login } = useAuth();
+    const { t, i18n } = useTranslation();
+
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
         setError("");
@@ -33,17 +36,28 @@ export const Login = () => {
             navigate("/home");
         } catch (error: any) {
             console.error("Login failed", error);
-            setError(error.response?.data?.error || "Something went wrong");
+            setError(error.response?.data?.error || t("login.error"));
         } finally {
             setIsLoading(false);
         }
     };
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({
             ...formData,
             [e.target.name]: e.target.value,
         });
     };
+
+    useEffect(() => {
+        document.documentElement.lang = i18n.language;
+        document.documentElement.dir = i18n.language === "ar" ? "rtl" : "ltr";
+        document.body.style.fontFamily =
+            i18n.language === "ar"
+                ? "'Cairo', 'Noto Kufi Arabic', sans-serif"
+                : "'Inter', system-ui, sans-serif";
+    }, [i18n.language]);
+
     return (
         <div className="flex min-h-screen items-center justify-center bg-linear-to-br from-emerald-200 via-white to-blue-200 p-4">
             <div className="w-full max-w-md">
@@ -53,10 +67,10 @@ export const Login = () => {
                         <BookOpen className="h-8 w-8 text-white" />
                     </div>
                     <h1 className="mb-2 text-3xl font-bold text-slate-900">
-                        Welcome Back
+                        {t("login.welcome")}
                     </h1>
                     <p className="text-sm text-slate-600">
-                        Sign in to continue your Quranic journey
+                        {t("login.subtitle")}
                     </p>
                 </div>
 
@@ -64,10 +78,10 @@ export const Login = () => {
                 <Card className="border-slate-200 shadow-xl">
                     <CardHeader className="space-y-1">
                         <CardTitle className="text-2xl font-bold text-slate-900">
-                            Log In
+                            {t("login.title")}
                         </CardTitle>
                         <CardDescription className="text-slate-600">
-                            Enter your credentials to access your account
+                            {t("login.description")}
                         </CardDescription>
                     </CardHeader>
                     <CardContent>
@@ -83,13 +97,13 @@ export const Login = () => {
                                     htmlFor="email"
                                     className="text-slate-700"
                                 >
-                                    Email
+                                    {t("login.email")}
                                 </Label>
                                 <Input
                                     id="email"
                                     name="email"
                                     type="email"
-                                    placeholder="name@example.com"
+                                    placeholder={t("login.emailPlaceholder")}
                                     value={formData.email}
                                     onChange={handleChange}
                                     required
@@ -101,13 +115,13 @@ export const Login = () => {
                                     htmlFor="password"
                                     className="text-slate-700"
                                 >
-                                    Password
+                                    {t("login.password")}
                                 </Label>
                                 <Input
                                     id="password"
                                     name="password"
                                     type="password"
-                                    placeholder="Enter your password"
+                                    placeholder={t("login.passwordPlaceholder")}
                                     value={formData.password}
                                     onChange={handleChange}
                                     required
@@ -122,22 +136,22 @@ export const Login = () => {
                                 {loading ? (
                                     <>
                                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                        Signing In...
+                                        {t("login.loading")}
                                     </>
                                 ) : (
-                                    "Sign In"
+                                    t("login.button")
                                 )}
                             </Button>
                         </form>
                     </CardContent>
                     <CardFooter className="flex flex-col space-y-4 border-t border-slate-100 pt-6">
                         <div className="text-center text-sm text-slate-600">
-                            Don't have an account?{" "}
+                            {t("login.noAccount")}{" "}
                             <Link
                                 to="/signup"
                                 className="font-semibold text-emerald-600 hover:text-emerald-700 transition-colors"
                             >
-                                Sign up
+                                {t("login.signup")}
                             </Link>
                         </div>
                         <Button
@@ -145,7 +159,19 @@ export const Login = () => {
                             className="w-full border-slate-300 text-slate-700 hover:bg-slate-50 hover:text-slate-900"
                             onClick={() => navigate("/")}
                         >
-                            Back to Home
+                            {t("login.back")}
+                        </Button>
+
+                        <Button
+                            variant="ghost"
+                            className="text-emerald-700 hover:text-emerald-900"
+                            onClick={() =>
+                                i18n.changeLanguage(
+                                    i18n.language === "ar" ? "en" : "ar"
+                                )
+                            }
+                        >
+                            {i18n.language === "ar" ? "English" : "العربية"}
                         </Button>
                     </CardFooter>
                 </Card>
