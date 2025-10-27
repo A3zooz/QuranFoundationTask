@@ -42,6 +42,15 @@ export const Reader = () => {
                 isLoading(false);
             }
         };
+        const fetchSurahName = async (surahNumber: number) => {
+            try {
+                const response = await axios.get(`surah/${surahNumber}`);
+                return response.data.name;
+            } catch (error) {
+                console.error("Error fetching surah name:", error);
+                return "";
+            }
+        };
         fetchPageVerses();
         console.log("Fetched verses for page", pageNum);
         console.log(verses);
@@ -110,6 +119,21 @@ export const Reader = () => {
                             <div className="quran-text-container leading-loose font-['Uthmanic','Traditional_Arabic',serif]" dir= "rtl">
                                 {verses.map((verse: any, index: number) => (
                                     <span key={index} className="inline">
+                                        {verse.verseNumber === 1 && (
+                                            <div className="w-full text-center my-8">
+                                                <div className="inline-block bg-linear-to-r from-emerald-600 to-emerald-700 text-white px-8 py-4 rounded-lg shadow-lg">
+                                                    <h2 className="text-3xl font-bold mb-2">
+                                                        سُورَةُ {verse.surah}
+                                                    </h2>
+                                                </div>
+                                                {/* Bismillah - except for Surah At-Tawbah (9) */}
+                                                {verse.surahNumber !== 9 && (
+                                                    <div className="text-4xl mt-6 mb-4 text-emerald-800">
+                                                        بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ
+                                                    </div>
+                                                )}
+                                            </div>
+                                        )}
                                         <span className="text-3xl font-arabic leading-loose">
                                             {verse.textUthmani}
                                         </span>

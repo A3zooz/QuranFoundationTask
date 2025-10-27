@@ -34,6 +34,22 @@ export const getPageVerses = async (req, res) => {
     }
 }
 
+export const getSurahByNumber = async (req, res) => {
+    try {
+        const surahNumber = req.params.surahNumber;
+        if (!isValidChapterId(surahNumber)) {
+            return res.status(400).json({ message: 'Invalid Surah number' });
+        }
+        const response = await quranApi.chapters.findById(surahNumber, {
+            language: Language.ARABIC
+        });
+        return res.status(200).json(response);
+    } catch (error) {
+        console.error('Error fetching surah by number:', error);
+        return res.status(500).json({ message: 'Error fetching surah by number', error: error.message });
+    }
+}
+
 export const getSurahAudio = async (req, res) => {
     try {
         const surahNumber = req.params.surahNumber;
