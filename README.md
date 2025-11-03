@@ -9,15 +9,31 @@ A full-stack web application for reading, listening to, and studying the Holy Qu
 
 ## 📋 Table of Contents
 
+- [Screenshots](#-screenshots)
 - [Features](#-features)
 - [Tech Stack](#-tech-stack)
 - [Project Structure](#-project-structure)
 - [Getting Started](#-getting-started)
 - [Core Functionality](#-core-functionality)
 - [API Endpoints](#-api-endpoints)
-- [Screenshots](#-screenshots)
 - [Contributing](#-contributing)
 - [License](#-license)
+
+## 📸 Screenshots
+
+- Landing page
+<img width="1919" height="903" alt="image" src="https://github.com/user-attachments/assets/229d7eb8-defe-4d18-9e4d-8fa540a73085" />
+- Login/Signup pages
+<img width="1899" height="905" alt="image" src="https://github.com/user-attachments/assets/cad087a3-b826-4edf-a96e-d85b8b5f71f5" />
+<img width="1919" height="909" alt="image" src="https://github.com/user-attachments/assets/64a06586-aaf0-4be0-8400-11e1aedb9b74" />
+- Surah list with favorites
+<img width="1903" height="912" alt="image" src="https://github.com/user-attachments/assets/aefe7b39-cf4b-454c-8d98-1827d2f7f373" />
+- Quran page reader
+<img width="1889" height="905" alt="image" src="https://github.com/user-attachments/assets/c672a291-845f-4250-b6d7-aa8a1982491d" />
+- Audio player interface
+<img width="615" height="519" alt="image" src="https://github.com/user-attachments/assets/66551b28-371a-4392-a34a-959db3c9e388" />
+- Tafsir viewer
+<img width="1911" height="909" alt="image" src="https://github.com/user-attachments/assets/c5a27dae-e9ab-40ce-b97e-0e68ed7a6820" />
 
 ## ✨ Features
 
@@ -241,15 +257,7 @@ QuranFoundationTask/
 - `GET /api/tafsir/tafsirs` - Get available Tafsir resources
 - `GET /api/tafsir/tafsirs/:surahNumber/:verseNumber` - Get Tafsir for specific verse
 
-## 📸 Screenshots
 
-*Screenshots would showcase:*
-- Landing page
-- Login/Signup pages
-- Surah list with favorites
-- Quran page reader
-- Audio player interface
-- Tafsir viewer
 
 ## 🤝 Contributing
 
